@@ -1,3 +1,3 @@
 ## React-for-beginers
 
-[link](http://wesbos.com/react-for-beginners-updated-and-re-recorded/)
+[Videos](http://www.bilibili.com/video/av8452793/index_2.html#page=1)
