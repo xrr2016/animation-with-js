@@ -13,8 +13,10 @@ const Greet = React.createClass({
   handleSubmit(event) {
     event.preventDefault()
     const name = this.refs.name.value
-    this.refs.name.value = ''
-    this.setState({name})
+    if (name.length > 0) {
+      this.refs.name.value = ''
+      this.setState({name})
+    }
   },
   render() {
     return (
