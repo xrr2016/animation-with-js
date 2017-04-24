@@ -1,3 +1,3 @@
-## React-for-beginers
+## Intro To React
 
-[Videos](http://www.bilibili.com/video/av8452793/index_2.html#page=1)
+[video](https://vimeo.com/213710634)
