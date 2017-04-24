@@ -1,18 +1,32 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from 'react'
+// import logo from './logo.svg'
+import './App.css'
+import WeatherDisplay from './components/weatherDisplay'
+
+const Cities = [
+  { name: "Palo Alto", zip: "94303" },
+  { name: "San Jose", zip: "94088" },
+  { name: "Santa Cruz", zip: "95062" },
+  { name: "Honolulu", zip: "96803" }
+]
+
 
 class App extends Component {
+  state = {
+    activeCity: 0
+  }
+
   render() {
+    const activeCity = this.state.activeCity
     return (
       <div className="App">
-        <div className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h2>Welcome to React</h2>
-        </div>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
+        {Cities.map((city, index) => (
+          <button key={index}
+          onClick={() => this.setState({activeCity: index})}>
+            {city.name}
+          </button>
+        ))}
+        <WeatherDisplay key={activeCity} zip={Cities[activeCity].zip} />
       </div>
     );
   }
