@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import api from '../api'
 
 export default class WeatherDispaly extends Component {
   state = {
