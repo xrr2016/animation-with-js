@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Event</title>
+  <link rel="stylesheet" href="./main.css">
+</head>
+
+<body>
+  <canvas id="canvas" width="600" height="600"></canvas>
+  <script>
+    (() => {
+      canvas.addEventListener('mousedown', event => {
+        console.log('mouse down', event)
+      }, false)
+      canvas.addEventListener('mouseup', event => {
+        console.log('mouse up', event)
+      }, false)
+    })()
+  </script>
+</body>
+
+</html>

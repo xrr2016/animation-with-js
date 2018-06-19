@@ -1,3 +1,3 @@
-## Intro To React
+## Animation with JavaScript
 
-[video](https://vimeo.com/213710634)
+[](http://lamberta.github.io/html5-animation/)
