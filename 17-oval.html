@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Oval</title>
+  <link rel="stylesheet" href="./main.css">
+</head>
+
+<body>
+  <canvas id="canvas" width="600" height="600"></canvas>
+  <script src="./classes/Ball.js"></script>
+  <script>
+    (() => {
+      const canvas = document.getElementById('canvas')
+      const context = canvas.getContext('2d')
+      const ball = new Ball(60, 'purple')
+
+      let angle = 0
+      let centerX = canvas.width / 2
+      let centerY = canvas.height / 2
+      let radiusX = 150
+      let radiusY = 100
+      let speed = .05
+
+      function animate() {
+        requestAnimationFrame(animate)
+        context.clearRect(0, 0, canvas.width, canvas.height)
+
+        ball.x = centerX + Math.cos(angle) * radiusX
+        ball.y = centerY + Math.sin(angle) * radiusY
+        angle += speed
+        ball.draw(context)
+      }
+
+      animate()
+
+    })()
+  </script>
+</body>
+
+</html>
