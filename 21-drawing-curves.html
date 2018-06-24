@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Drawing</title>
+  <link rel="stylesheet" href="./main.css">
+  <style>
+    .log {
+      text-align: center;
+    }
+  </style>
+</head>
+
+<body>
+  <canvas id="canvas" width="600" height="600"></canvas>
+  <h6 class="log"></h6>
+  <script>
+    (() => {
+      function $(selector) {
+        return document.querySelector(selector)
+      }
+
+      const canvas = document.getElementById('canvas')
+      const context = canvas.getContext('2d')
+      const mouse = {
+        x: 0,
+        y: 0
+      }
+
+      const point0 = {
+        x: 100,
+        y: 200
+      }
+      const point2 = {
+        x: 300,
+        y: 200
+      }
+
+      canvas.addEventListener('mousemove', event => {
+        mouse.x = event.offsetX
+        mouse.y = event.offsetY
+        context.clearRect(0, 0, canvas.width, canvas.height)
+        const point1 = {
+          x: mouse.x,
+          y: mouse.y
+        }
+
+        context.beginPath()
+        context.moveTo(point0.x, point0.y)
+        context.quadraticCurveTo(point1.x, point1.y, point2.x, point2.y)
+        context.stroke()
+      }, false)
+
+    })()
+  </script>
+</body>
+
+</html>
