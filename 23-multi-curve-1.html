@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Curve Through Point</title>
+  <link rel="stylesheet" href="./main.css">
+</head>
+
+<body>
+  <canvas id="canvas" width="600" height="600"></canvas>
+  <button onclick="location.reload()">reload</button>
+  <script>
+    (() => {
+      function $(selector) {
+        return document.querySelector(selector)
+      }
+
+      const canvas = document.getElementById('canvas')
+      const context = canvas.getContext('2d')
+      const points = []
+      const NUMBER_OF_POINTS = 9
+
+      for (let index = 0; index < NUMBER_OF_POINTS; index++) {
+        points.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height
+        })
+      }
+
+
+      context.beginPath()
+      context.moveTo(points[0].x, points[0].y)
+
+      for (let i = 1; i < NUMBER_OF_POINTS; i += 2) {
+        context.quadraticCurveTo(points[i].x, points[i].y, points[i + 1].x, points[i + 1].y)
+      }
+      context.stroke()
+
+    })()
+  </script>
+</body>
+
+</html>

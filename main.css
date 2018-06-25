@@ -4,10 +4,13 @@
 
 html,
 body {
-  display: grid;
+  display: flex;
+  flex-flow: column wrap;
+  justify-content: flex-start;
   align-items: center;
   height: 100%;
   margin: 0;
+  padding-top: 40px;
   box-sizing: border-box;
   background-color: var(--bg-color);
 }

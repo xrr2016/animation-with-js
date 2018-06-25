@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Curve Through Point</title>
+  <link rel="stylesheet" href="./main.css">
+</head>
+
+<body>
+  <canvas id="canvas" width="600" height="600"></canvas>
+  <button onclick="location.reload()">reload</button>
+  <script>
+    (() => {
+      function $(selector) {
+        return document.querySelector(selector)
+      }
+
+      const canvas = document.getElementById('canvas')
+      const context = canvas.getContext('2d')
+      const points = []
+      const ctrlPoint0 = {}
+      const ctrlPoint1 = {}
+      const NUMBER_OF_POINTS = 9
+
+      for (let index = 0; index < NUMBER_OF_POINTS; index++) {
+        points.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height
+        })
+      }
+
+      ctrlPoint1.x = (points[0].x + points[points.length - 1].x) / 2
+      ctrlPoint1.y = (points[0].y + points[points.length - 1].y) / 2
+      context.beginPath()
+      context.moveTo(ctrlPoint1.x, ctrlPoint1.y)
+
+      for (let i = 0; i < NUMBER_OF_POINTS - 1; i++) {
+        ctrlPoint0.x = (points[i].x + points[i + 1].x) / 2
+        ctrlPoint0.y = (points[i].y + points[i + 1].y) / 2
+        context.quadraticCurveTo(points[i].x, points[i].y, ctrlPoint0.x, ctrlPoint0.y)
+      }
+
+      const lastPoint = points[points.length - 1]
+
+      context.quadraticCurveTo(lastPoint.x, lastPoint.y, ctrlPoint1.x, ctrlPoint1.y)
+      context.stroke()
+
+    })()
+  </script>
+</body>
+
+</html>
