@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>14-grayscale.html</title>
+  <link rel="stylesheet" href="../main.css">
+</head>
+
+<body>
+  <canvas id="canvas" width="320" height="320"></canvas>
+  <script>
+    window.onload = function () {
+      function $(selector) {
+        return document.querySelector(selector)
+      }
+
+      const canvas = $('#canvas')
+      const context = canvas.getContext('2d')
+
+      for (let i = 0; i < canvas.width; i += 10) {
+        for (let j = 0; j < canvas.height; j += 10) {
+          context.fillStyle = (i % 20 === 0) ? "#f00" : ((i % 30 === 0) ? "#0f0" : "#00f");
+          context.fillRect(i, j, 10, 10)
+        }
+      }
+
+      const imgData = context.getImageData(0, 0, canvas.width, canvas.height)
+      const pixels = imgData.data
+
+      console.log(pixels)
+
+      for (let offset = 0; offset < pixels.length; offset += 4) {
+        const red = pixels[offset]
+        const green = pixels[offset + 1]
+        const blue = pixels[offset + 2]
+        const yellow = (0.2126 * red) + (0.7152 * green) + (0.0722 * blue)
+
+        pixels[offset] = pixels[offset + 1] = pixels[offset + 2] = yellow
+      }
+
+      console.log(pixels)
+
+      context.putImageData(imgData, 0, 0)
+
+    }
+  </script>
+</body>
+
+</html>
