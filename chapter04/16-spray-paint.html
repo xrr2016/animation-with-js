@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Spray Paint</title>
+  <link rel="stylesheet" href="../main.css">
+</head>
+
+<body>
+  <canvas id="canvas" width="320" height="320"></canvas>
+  <script>
+    function $(selector) {
+      return document.querySelector(selector)
+    }
+
+    function parseColor(color, toNumber) {
+      if (toNumber) {
+        if (typeof color === 'number') {
+          return (color | 0)
+        }
+        if (typeof color === 'string' && color[0] === '#') {
+          color = color.slice(1)
+        }
+        return window.parseInt(color, 16)
+      } else {
+        if (typeof color === 'number') {
+          color = '#' + ('00000' + (color | 0).toString(16)).substr(-6)
+        }
+        return color
+      }
+    }
+
+    function captureMouse(element) {
+      const mouse = {
+          x: 0,
+          y: 0,
+          event: null
+        },
+        body_scrollLeft = document.body.scrollLeft,
+        element_scrollLeft = document.documentElement.scrollLeft,
+        body_scrollTop = document.body.scrollTop,
+        element_scrollTop = document.documentElement.scrollTop,
+        offsetLeft = element.offsetLeft,
+        offsetTop = element.offsetTop;
+
+      element.addEventListener('mousemove', function (event) {
+        var x, y;
+
+        if (event.pageX || event.pageY) {
+          x = event.pageX;
+          y = event.pageY;
+        } else {
+          x = event.clientX + body_scrollLeft + element_scrollLeft;
+          y = event.clientY + body_scrollTop + element_scrollTop;
+        }
+        x -= offsetLeft;
+        y -= offsetTop;
+
+        mouse.x = x;
+        mouse.y = y;
+        mouse.event = event;
+      }, false);
+
+      return mouse;
+    }
+
+    const canvas = $('#canvas')
+    const context = canvas.getContext('2d')
+    const mouse = captureMouse(canvas)
+    const imgData = context.getImageData(0, 0, canvas.width, canvas.height)
+    const pixels = imgData.data
+    const brushSize = 25
+    const brushDensity = 50
+    let brushColor
+
+    function onMouseMove(event) {
+      for (let index = 0; index < brushDensity; index++) {
+        const angle = Math.random() * Math.PI * 2
+        const radius = Math.random() * brushSize
+        const xPos = (mouse.x + Math.cos(angle) * radius) | 0
+        const yPos = (mouse.x + Math.sin(angle) * radius) | 0
+        const offset = (xPos + yPos * imgData.width) * 4
+
+        pixels[offset] = brushColor >> 16 & 0xff
+        pixels[offset + 1] = brushColor >> 8 & 0xff
+        pixels[offset + 2] = brushColor & 0xff
+        pixels[offset + 3] = 255
+      }
+
+      context.putImageData(imgData, 0, 0)
+    }
+
+    canvas.addEventListener('mousedown', () => {
+      brushColor = parseColor(Math.random() * 0xffffff, true)
+      canvas.addEventListener('mousemove', onMouseMove, false)
+    }, false)
+
+    canvas.addEventListener('mouseup', () => {
+      brushColor = parseColor(Math.random() * 0xffffff, true)
+      canvas.removeEventListener('mousemove', onMouseMove, false)
+    }, false)
+
+    // canvas.addEventListener('mousemove', event => {
+    //   mouse.x = event.offsetX
+    //   mouse.y = event.offsetY
+    // }, false)
+  </script>
+</body>
+
+</html>
