@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Velocity Angle</title>
+  <link rel="stylesheet" href="../main.css">
+</head>
+
+<body>
+  <canvas id="canvas" width="640" height="480"></canvas>
+  <script src="../classes/Ball.js"></script>
+  <script>
+    function $(selector) {
+      return document.querySelector(selector)
+    }
+
+    const canvas = $('#canvas')
+    const context = canvas.getContext('2d')
+    const ball = new Ball(30, 'red')
+
+    const angle = 45
+    const speed = 2
+
+    ball.x = 50
+    ball.y = 100
+
+    function animate() {
+      requestAnimationFrame(animate)
+      context.clearRect(0, 0, canvas.width, canvas.height)
+
+
+      const radius = angle * Math.PI / 180
+      const vx = Math.cos(radius) * speed
+      const vy = Math.sin(radius) * speed
+
+      ball.x += vx
+      ball.y += vy
+      ball.draw(context)
+
+    }
+
+    animate()
+  </script>
+</body>
+
+</html>

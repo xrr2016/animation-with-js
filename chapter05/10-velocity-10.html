@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Follow Mouse 2</title>
+  <link rel="stylesheet" href="../main.css">
+</head>
+
+<body>
+  <canvas id="canvas" width="640" height="480"></canvas>
+  <script src="../classes/Ball.js"></script>
+  <script src="../classes/Arrow.js"></script>
+  <script>
+    function $(selector) {
+      return document.querySelector(selector)
+    }
+
+    const canvas = $('#canvas')
+    const context = canvas.getContext('2d')
+    const arrow = new Arrow()
+    const mouse = {
+      x: 0,
+      y: 0
+    }
+    let vx = 0
+    let vy = 0
+    let force = .05
+
+    arrow.x = canvas.width / 2
+    arrow.y = canvas.height / 2
+
+    canvas.addEventListener('mousemove', event => {
+      mouse.x = event.offsetX
+      mouse.y = event.offsetY
+    }, false)
+
+    function animate() {
+      requestAnimationFrame(animate)
+      context.clearRect(0, 0, canvas.width, canvas.height)
+
+      const dx = mouse.x - arrow.x
+      const dy = mouse.y - arrow.y
+      const angle = Math.atan2(dx, dy)
+      const ax = Math.cos(angle) * force
+      const ay = Math.sin(angle) * force
+
+      arrow.rotation = angle
+      vx += ax
+      vy += ay
+      arrow.x += vx
+      arrow.y += vy
+      arrow.draw(context)
+    }
+
+    animate()
+  </script>
+</body>
+
+</html>
