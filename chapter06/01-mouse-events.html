@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Mouse Event</title>
+  <link rel="stylesheet" href="../main.css" />
+</head>
+
+<body>
+  <canvas id="canvas" width="600" height="600"></canvas>
+  <div id="log"></div>
+  <script src="../classes/Ball.js"></script>
+  <script>
+    function $(selector) {
+      return document.querySelector(selector)
+    }
+
+    function containsPoint(rect, x, y) {
+      return !(x < rect.x ||
+        x > rect.x + rect.width ||
+        y < rect.y ||
+        y > rect.y + rect.height)
+    }
+
+    const log = $('#log')
+    const canvas = $('#canvas')
+    const context = canvas.getContext('2d')
+    const mouse = {
+      x: 0,
+      y: 0
+    }
+    const ball = new Ball()
+
+    ball.x = canvas.width / 2
+    ball.y = canvas.height / 2
+    ball.draw(context)
+
+    canvas.addEventListener('mousedown', event => {
+      mouse.x = event.offsetX
+      mouse.y = event.offsetY
+
+      if (containsPoint(ball.getBounds(), mouse.x, mouse.y)) {
+        log.textContent = "in ball: mousedown"
+      } else {
+        log.textContent = "canvas: mousedown"
+      }
+    }, false)
+
+    canvas.addEventListener('mouseup', event => {
+      mouse.x = event.offsetX
+      mouse.y = event.offsetY
+      if (containsPoint(ball.getBounds(), mouse.x, mouse.y)) {
+        log.textContent = "in ball: mouseup"
+      } else {
+        log.textContent = "canvas: mouseup"
+      }
+    }, false)
+
+    canvas.addEventListener('mousemove', event => {
+      mouse.x = event.offsetX
+      mouse.y = event.offsetY
+      if (containsPoint(ball.getBounds(), mouse.x, mouse.y)) {
+        log.textContent = "in ball: mousemove"
+      } else {
+        log.textContent = "canvas: mousemove"
+      }
+    }, false)
+  </script>
+</body>
+
+</html>
