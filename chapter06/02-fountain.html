@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Fountain</title>
+  <link rel="stylesheet" href="../main.css" />
+</head>
+
+<body>
+  <canvas id="canvas" width="600" height="600"></canvas>
+  <div id="log"></div>
+  <script src="../classes/Ball.js"></script>
+  <script>
+    function $(selector) {
+      return document.querySelector(selector)
+    }
+
+    function randomColor() {
+      let color = '#'
+      const letters = '0123456789abcdef'
+      while (color.length < 7) {
+        color += letters[Math.floor(Math.random() * letters.length)]
+      }
+      return color
+    }
+
+    const canvas = $('#canvas')
+    const context = canvas.getContext('2d')
+    const balls = []
+    const NUM_OF_BALLS = 120
+    const gravity = .4
+
+    for (let index = 0; index < NUM_OF_BALLS; index++) {
+      const ball = new Ball(4 * Math.random() + 2, randomColor())
+      ball.x = canvas.width / 2
+      ball.y = canvas.height
+      ball.vx = Math.random() * 2 - 1
+      ball.vy = Math.random() * -10 - 12
+      balls.push(ball)
+    }
+
+    function drawBall(ball, index) {
+      ball.vy += gravity
+      ball.x += ball.vx
+      ball.y += ball.vy
+      if (ball.x - ball.radius > canvas.width ||
+        ball.x + ball.radius < 0 ||
+        ball.y - ball.radius > canvas.height ||
+        ball.y + ball.radius < 0) {
+        ball.x = canvas.width / 2
+        ball.y = canvas.height
+        ball.vx = Math.random() * 2 - 1
+        ball.vy = Math.random() * -10 - 10
+      }
+      ball.draw(context)
+    }
+
+    function drawFrame() {
+      requestAnimationFrame(drawFrame, canvas)
+      context.clearRect(0, 0, canvas.width, canvas.height)
+
+      balls.forEach(drawBall)
+    }
+
+    drawFrame()
+  </script>
+</body>
+
+</html>
