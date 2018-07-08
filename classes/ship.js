@@ -14,7 +14,7 @@ class Ship {
     context.translate(this.x, this.y)
     context.rotate(this.rotation)
     context.lineWidth = 1
-    context.strokeStyle = '#000'
+    context.strokeStyle = '#fff'
     context.beginPath()
     context.moveTo(10, 0)
     context.lineTo(-10, 10)
