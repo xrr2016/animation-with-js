@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Bouncing 2</title>
+  <link rel="stylesheet" href="../main.css">
+</head>
+
+<body>
+  <canvas id="canvas" width="640" height="480"></canvas>
+  <script src="../classes/Ball.js"></script>
+  <script>
+    function $(selector) {
+      return document.querySelector(selector)
+    }
+
+    const canvas = $('#canvas')
+    const context = canvas.getContext('2d')
+    const ball = new Ball(30, 'red')
+    const canvasLeft = 0
+    const canvasRight = canvas.width
+    const canvasTop = 0
+    const canvasBottom = canvas.height
+
+    let vx = Math.random() * 10 - 5
+    let vy = Math.random() * 10 - 5
+    let bounce = -.7
+    let gravity = .1
+
+    ball.x = canvas.width / 2
+    ball.y = canvas.height / 2
+
+    function animate() {
+      requestAnimationFrame(animate)
+      context.clearRect(0, 0, canvas.width, canvas.height)
+
+      vy += gravity
+      ball.x += vx
+      ball.y += vy
+
+      if (ball.x + ball.radius > canvasRight) {
+        ball.x = canvasRight - ball.radius
+        vx *= bounce
+      } else if (ball.x - ball.radius < canvasLeft) {
+        ball.x = canvasLeft + ball.radius
+        vx *= bounce
+      }
+
+      if (ball.y + ball.radius > canvasBottom) {
+        ball.y = canvasBottom - ball.radius
+        vy *= bounce
+      } else if (ball.y - ball.radius < canvasTop) {
+        ball.y = canvasTop + ball.radius
+        vy *= bounce
+      }
+
+      ball.draw(context)
+    }
+
+    animate()
+  </script>
+</body>
+
+</html>
