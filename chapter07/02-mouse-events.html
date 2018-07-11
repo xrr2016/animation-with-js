@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Mouse Event</title>
+  <title>Touch Event</title>
   <link rel="stylesheet" href="../main.css" />
 </head>
 
@@ -18,6 +18,49 @@
       return document.querySelector(selector)
     }
 
+    function captureTouch(element) {
+      var touch = { x: null, y: null, isPressed: false, event: null },
+        body_scrollLeft = document.body.scrollLeft,
+        element_scrollLeft = document.documentElement.scrollLeft,
+        body_scrollTop = document.body.scrollTop,
+        element_scrollTop = document.documentElement.scrollTop,
+        offsetLeft = element.offsetLeft,
+        offsetTop = element.offsetTop;
+
+      element.addEventListener('touchstart', function (event) {
+        touch.isPressed = true;
+        touch.event = event;
+      }, false);
+
+      element.addEventListener('touchend', function (event) {
+        touch.isPressed = false;
+        touch.x = null;
+        touch.y = null;
+        touch.event = event;
+      }, false);
+
+      element.addEventListener('touchmove', function (event) {
+        var x, y,
+          touch_event = event.touches[0]; //first touch
+
+        if (touch_event.pageX || touch_event.pageY) {
+          x = touch_event.pageX;
+          y = touch_event.pageY;
+        } else {
+          x = touch_event.clientX + body_scrollLeft + element_scrollLeft;
+          y = touch_event.clientY + body_scrollTop + element_scrollTop;
+        }
+        x -= offsetLeft;
+        y -= offsetTop;
+
+        touch.x = x;
+        touch.y = y;
+        touch.event = event;
+      }, false);
+
+      return touch;
+    };
+
     function containsPoint(rect, x, y) {
       return !(x < rect.x ||
         x > rect.x + rect.width ||
@@ -28,44 +71,33 @@
     const log = $('#log')
     const canvas = $('#canvas')
     const context = canvas.getContext('2d')
-    const mouse = {
-      x: 0,
-      y: 0
-    }
+    const touch = captureTouch(canvas)
     const ball = new Ball()
 
     ball.x = canvas.width / 2
     ball.y = canvas.height / 2
     ball.draw(context)
 
-    canvas.addEventListener('mousedown', event => {
-      mouse.x = event.offsetX
-      mouse.y = event.offsetY
-
-      if (containsPoint(ball.getBounds(), mouse.x, mouse.y)) {
-        log.textContent = "in ball: mousedown"
+    canvas.addEventListener('touchstart', event => {
+      event.preventDefault()
+      if (containsPoint(ball.getBounds(), touch.x, touch.y)) {
+        log.textContent = "in ball: touchstart"
       } else {
-        log.textContent = "canvas: mousedown"
+        log.textContent = "canvas: touchstart"
       }
     }, false)
 
-    canvas.addEventListener('mouseup', event => {
-      mouse.x = event.offsetX
-      mouse.y = event.offsetY
-      if (containsPoint(ball.getBounds(), mouse.x, mouse.y)) {
-        log.textContent = "in ball: mouseup"
-      } else {
-        log.textContent = "canvas: mouseup"
-      }
+    canvas.addEventListener('touchend', event => {
+      event.preventDefault()
+      log.textContent = "touchend"
     }, false)
 
-    canvas.addEventListener('mousemove', event => {
-      mouse.x = event.offsetX
-      mouse.y = event.offsetY
-      if (containsPoint(ball.getBounds(), mouse.x, mouse.y)) {
-        log.textContent = "in ball: mousemove"
+    canvas.addEventListener('touchmove', event => {
+      event.preventDefault()
+      if (containsPoint(ball.getBounds(), touch.x, touch.y)) {
+        log.textContent = "in ball: touchmove"
       } else {
-        log.textContent = "canvas: mousemove"
+        log.textContent = "canvas: touchmove"
       }
     }, false)
   </script>
