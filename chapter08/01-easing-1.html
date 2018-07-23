@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Event</title>
+  <link rel="stylesheet" href="./main.css">
+</head>
+
+<body>
+  <canvas id="canvas" width="600" height="600"></canvas>
+  <script src="../classes/Ball.js"></script>
+  <script>
+    function $(selector) {
+      return document.querySelector(selector)
+    }
+    window.addEventListener('load', () => {
+      const canvas = $('#canvas')
+      const context = canvas.getContext('2d')
+
+      const ball = new Ball()
+      const easing = 0.05
+      const targetX = canvas.width / 2
+      const targetY = canvas.height / 2
+
+      function drawFrame() {
+        requestAnimationFrame(drawFrame)
+        context.clearRect(0, 0, canvas.width, canvas.height)
+
+        let vx = (targetX - ball.x) * easing
+        let vy = (targetY - ball.y) * easing
+
+        ball.x += vx
+        ball.y += vy
+        ball.draw(context)
+      }
+
+      drawFrame()
+    })
+  </script>
+</body>
+
+</html>
